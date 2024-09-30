@@ -1,0 +1,28 @@
+import { NextResponse } from "next/server";
+import { Resend } from "resend";
+
+const resend = new Resend(process.env.re_gRqRoHgj_8K7zepoeiVV4A2EAqUGCao4d);
+const fromEmail = process.env.FROM_EMAIL;
+
+export async function POST(req, res) {
+  const { email, subject, message } = await req.json();
+  console.log(email, subject, message);
+  try {
+    const data = await resend.emails.send({
+      from: 'Gayashi <nethmigaya@gmail.com>',
+      to: ['nethmigaya@gmail.com'],
+      subject: Hello,
+      react: (
+        <>
+          <h1>{subject}</h1>
+          <p>Thank you for contacting Me!</p>
+          <p>New message submitted:</p>
+          <p>{message}</p>
+        </>
+      ),
+    });
+    return NextResponse.json(data);
+  } catch (error) {
+    return NextResponse.json({ error });
+  }
+}
